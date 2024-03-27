@@ -9,47 +9,47 @@ import cv2
 from keras.utils import normalize
 from unet import simple_unet_model
 import time
+
 #frompre_processing import my_PreProc
 #diabetic retinopathy classifications
+
 def predict(model_name, img):
- results = img_to_array(img)
+    results = img_to_array(img)
 arr = results.reshape(-1, 256, 256, 3)
 if model_name == "My_convolution_layer_model":
-new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymodel.h5')
-elifmodel_name == "Eye net model":
-new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet.h5')
-elifmodel_name == "Transfer learning new model":
-new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymodel_transfer.h5')
-elifmodel_name == "Transfer learning eye net":
-new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet_transfer2.h5')
- # arr = results.reshape((1,)+results.shape)
-results = new_model.predict(arr)
- # Now predict using the trained RF model.
- # prediction_RF = model1.predict(X_test_features)
+    new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymodel.h5')
+elif model_name == "Eye net model":
+    new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet.h5')
+elif model_name == "Transfer learning new model":
+    new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymodel_transfer.h5')
+elif model_name == "Transfer learning eye net":
+    new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet_transfer2.h5')
+    # arr = results.reshape((1,)+results.shape)
+    results = new_model.predict(arr)
+    # Now predict using the trained RF model.
+    # prediction_RF = model1.predict(X_test_features)
 if results == 0:
- x = "diabetic"
+    x = "diabetic"
 else:
- x = "no_diabetic"
+    x = "no_diabetic"
  return x
 def get_model():
- return simple_unet_model(patch_size, patch_size, 1)
+    return simple_unet_model(patch_size, patch_size, 1)
 ##Exudates segmentation
 def prediction(model, image, patch_size):
-segm_img = np.zeros(image.shape[:2]) # Array with zeros to be filled with segmented values
+    segm_img = np.zeros(image.shape[:2]) # Array with zeros to be filled with segmented values
 patch_num = 1
 my_bar = st.progress(0)
 
 for i in range(0, image.shape[0], patch_size): # Steps of 256
-for j in range(0, image.shape[1], patch_size): # Steps of 256
+    for j in range(0, image.shape[1], patch_size): # Steps of 256
  # print(i, j)
-single_patch = image[i:i + patch_size, j:j + patch_size]
-single_patch_norm = np.expand_dims(normalize(np.array(single_patch), axis=1), 2)
-single_patch_shape = single_patch_norm.shape[:2]
-single_patch_input = np.expand_dims(single_patch_norm, 0)
-single_patch_prediction = (model.predict(single_patch_input)[0, :, :, 0] > 0.5).astype(np.uint8)
-segm_img[i:i + single_patch_shape[0], j:j + single_patch_shape[1]] += 
-cv2.resize(single_patch_prediction,
-single_patch_shape[::-1])
+    single_patch = image[i:i + patch_size, j:j + patch_size]
+    single_patch_norm = np.expand_dims(normalize(np.array(single_patch), axis=1), 2)
+    single_patch_shape = single_patch_norm.shape[:2]
+    single_patch_input = np.expand_dims(single_patch_norm, 0)
+    single_patch_prediction = (model.predict(single_patch_input)[0, :, :, 0] > 0.5).astype(np.uint8)
+    segm_img[i:i + single_patch_shape[0], j:j + single_patch_shape[1]] += cv2.resize(single_patch_prediction,single_patch_shape[::-1])
  # print("Finished processing patch number ", patch_num, " at position ", i, j)
 patch_num += 1
  # st.write(patch_num)
@@ -57,6 +57,7 @@ time.sleep(0.1)
  # whilepatch_num<= 100:
  # my_bar.progress(patch_num + 1)
  return segm_img
+
 def predictions(file, model, patch_size):
 large_image = cv2.imread(file)
 large_image=cv2.cvtColor(large_image,cv2.COLOR_BGR2GRAY)
@@ -65,11 +66,10 @@ segmented_image = prediction(model, large_image, patch_size)
  return segmented_image
 
 def get_image(model_name, name):
- if name == "Diabetic retinopathy classification":
- image = st.sidebar.file_uploader(label="Select an retinal fundus image", type=['jpg', 'jpeg', 
-'png'])
+    if name == "Diabetic retinopathy classification":
+        image = st.sidebar.file_uploader(label="Select an retinal fundus image", type=['jpg', 'jpeg', 'png'])
  if image is not None:
-image_data = image.read()
+     image_data = image.read()
  # uploaded_img=load_img(image_data, target_size=(256, 256))
  uploaded_img2 = Image.open(BytesIO(image_data))
  uploaded_img2 = uploaded_img2.resize((256, 256))
