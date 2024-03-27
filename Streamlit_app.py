@@ -14,28 +14,21 @@ import time
 def predict(model_name, img):
  results = img_to_array(img)
 arr = results.reshape(-1, 256, 256, 3)
- if model_name == "My_convolution_layer_model":
-new_model = 
-load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymod
-el.h5')
+if model_name == "My_convolution_layer_model":
+new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymodel.h5')
 elifmodel_name == "Eye net model":
-new_model = load_model(
- 'C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet.h5')
+new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet.h5')
 elifmodel_name == "Transfer learning new model":
-new_model = 
-load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymod
-el_transfer.h5')
+new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymodel_transfer.h5')
 elifmodel_name == "Transfer learning eye net":
-new_model = load_model(
- 
-'C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet_transfer2.h5')
+new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet_transfer2.h5')
  # arr = results.reshape((1,)+results.shape)
- results = new_model.predict(arr)
+results = new_model.predict(arr)
  # Now predict using the trained RF model.
  # prediction_RF = model1.predict(X_test_features)
- if results == 0:
+if results == 0:
  x = "diabetic"
- else:
+else:
  x = "no_diabetic"
  return x
 def get_model():
@@ -46,8 +39,8 @@ segm_img = np.zeros(image.shape[:2]) # Array with zeros to be filled with segmen
 patch_num = 1
 my_bar = st.progress(0)
 
- for i in range(0, image.shape[0], patch_size): # Steps of 256
- for j in range(0, image.shape[1], patch_size): # Steps of 256
+for i in range(0, image.shape[0], patch_size): # Steps of 256
+for j in range(0, image.shape[1], patch_size): # Steps of 256
  # print(i, j)
 single_patch = image[i:i + patch_size, j:j + patch_size]
 single_patch_norm = np.expand_dims(normalize(np.array(single_patch), axis=1), 2)
