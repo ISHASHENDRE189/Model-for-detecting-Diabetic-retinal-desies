@@ -32,7 +32,7 @@ if results == 0:
     x = "diabetic"
 else:
     x = "no_diabetic"
- return x
+return x
 def get_model():
     return simple_unet_model(patch_size, patch_size, 1)
 ##Exudates segmentation
