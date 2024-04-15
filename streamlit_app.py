@@ -43,8 +43,8 @@ def main():
 
         img=Image.open(uploaded_file)
 
-        extractor = AutoFeatureExtractor.from_pretrained("bhimrazy/diabetic-retinopathy-detection")
-        model = AutoModelForImageClassification.from_pretrained("bhimrazy/diabetic-retinopathy-detection")
+        extractor = AutoFeatureExtractor.from_pretrained("Rami/Diabetic_Retinopathy_Preprocessed_Dataset_256x256")
+        model = AutoModelForImageClassification.from_pretrained("Rami/Diabetic_Retinopathy_Preprocessed_Dataset_256x256")
 
         inputs = extractor(img,return_tensors="pt")
         outputs = model(**inputs)
